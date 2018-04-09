@@ -1,20 +1,21 @@
 const express = require('express');
 const Router = express.Router();
 
-const newModel = require('../models/news');
+const lawDocumentModel = require('../models/lawDocument');
 
-Router.get('/all', (req, res, next) => {
-  const perPage = parseInt(req.query.perPage);
+Router.get('/getAll', (req, res, next) => {
+  const perPage = parseInt(req.query.perPage) || 10;
   const page = Math.max(0, req.query.page);
-  newModel
-    .getAllNewsFromDB(page, perPage)
+  console.log('test:',page + " " + perPage);
+  lawDocumentModel
+    .getAllDocument(page, perPage)
     .then(result => {
       res.status(200).json(result);
     })
     .catch(err => {
       res.status(400).json({
         error: err
-      });
+      })
     });
 });
 

@@ -7,6 +7,9 @@ const cors = require('cors');
 
 const config = require('./config/config.json');
 const newsApi = require('./api/controllers/news');
+const classApi = require('./api/controllers/class');
+const agencyApi = require('./api/controllers/agency');
+const lawDocumentApi = require('./api/controllers/lawDocument');
 
 app.use(morgan('dev'));
 app.use(
@@ -30,6 +33,9 @@ mongoose.connect(config.connectionDatabase, err => {
 });
 
 app.use('/news', newsApi);
+app.use('/class', classApi);
+app.use('/agency', agencyApi);
+app.use('/lawDocument', lawDocumentApi);
 
 
 
