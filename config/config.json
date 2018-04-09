@@ -31,5 +31,6 @@
     "define": {
       "timestamps": false
     }
-  }
+  },
+  "connectionDatabase": "mongodb://admin:admin123@ds237669.mlab.com:37669/enterprise_law"
 }
