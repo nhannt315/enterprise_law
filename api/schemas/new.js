@@ -1,31 +1,32 @@
-module.exports = (sequelize, Sequelize) => {
-  let lawNews = sequelize.define(
-    'New',
-    {
-      id: {
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      link_to_news: {
-        type: Sequelize.TEXT
-      },
-      headlines: {
-        type: Sequelize.TEXT
-      },
-      published_date: {
-        type: Sequelize.BIGINT(20)
-      },
-      image: {
-        type: Sequelize.TEXT
-      },
-      brief: {
-        type: Sequelize.TEXT
-      }
-    },
-    {
-      tableName: 'News'
-    }
-  );
-  return lawNews;
-};
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const newSchema = new Schema({
+  _id: {
+    type: Schema.Types.ObjectId,
+    require: true,
+    auto: true
+  },
+  linkToNews: {
+    type: String,
+    require: true
+  },
+  headLines: {
+    type: String,
+    require: true
+  },
+  publishedDate: {
+    type: Date,
+    default: Date.now
+  },
+  image: {
+    type: String,
+    require: true
+  },
+  brief: {
+    type: String,
+    require: true
+  }
+});
+
+module.exports = newSchema;

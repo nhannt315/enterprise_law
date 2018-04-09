@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const config = require('./config/config.json');
+const newsApi = require('./api/controllers/news');
 
 app.use(morgan('dev'));
 app.use(
@@ -20,18 +21,6 @@ app.use(
 );
 app.use(cors());
 app.options('*', cors());
-
-const models = require('./api/schemas');
-
-models.sequelize
-  .sync()
-  .then(() => {
-    console.log('Nice! Database looks fine');
-  })
-  .catch(err => {
-    console.log(err, 'Something went wrong with the Database Update!');
-  });
-
 mongoose.connect(config.connectionDatabase, err => {
   if (err) {
     console.log(err);
@@ -39,5 +28,10 @@ mongoose.connect(config.connectionDatabase, err => {
     console.log('Connect to db successfully!');
   }
 });
+
+app.use('/news', newsApi);
+
+
+
 
 module.exports = app;

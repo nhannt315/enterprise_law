@@ -1,18 +1,17 @@
-const Sequelize = require('sequelize');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-module.exports = (sequelize, a) => {
-  let lawClass = sequelize.define('Class', {
-    id:{
-      type: Sequelize.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    name:{
-      type: Sequelize.STRING(50),
-      notEmpty: true
-    }
-  },{
-    tableName: 'Classes'
-  });
-  return lawClass;
-}
+const agencySchema = new Schema({
+  _id: {
+    type: Schema.Types.ObjectId,
+    require: true,
+    auto: true
+  },
+  name: {
+    type: String,
+    require: true,
+    unique: true
+  }
+});
+
+module.exports = agencySchema;
