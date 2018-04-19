@@ -7,14 +7,14 @@ module.exports = (sequelize, Sequelize) => {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      link_to_news: {
+      news_html: {
         type: Sequelize.TEXT
       },
       headlines: {
         type: Sequelize.TEXT
       },
       published_date: {
-        type: Sequelize.BIGINT(20)
+        type: Sequelize.TEXT
       },
       image: {
         type: Sequelize.TEXT
@@ -24,7 +24,7 @@ module.exports = (sequelize, Sequelize) => {
       }
     },
     {
-      tableName: 'News'
+      tableName: 'news'
     }
   );
   return lawNews;

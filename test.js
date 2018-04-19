@@ -37,7 +37,7 @@ mongoose.connect(config.connectionDatabase, err => {
         console.log(res);
       })
       .catch(err => {});
-    // copyNewData();
+    copyNewData();
     // copyClassData();
     // copyAgency();
     // copyLawDocument();
@@ -62,6 +62,11 @@ mongoose.connect(config.connectionDatabase, err => {
 //     flag++;
 //   });
 // });
+
+function parseDate(source) {
+  let dateParts = source.split('/');
+  return new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+}
 
 function copyLawDocument() {
   let i = 1;
@@ -162,9 +167,9 @@ function copyNewData() {
     results.forEach(result => {
       // console.log(result.dataValues);
       const newObject = {
-        linkToNews: result.dataValues.link_to_news,
+        newsHtml: result.dataValues.news_html,
         headLines: result.dataValues.headlines,
-        publishedDate: new Date(result.dataValues.published_date),
+        publishedDate: parseDate(result.dataValues.published_date),
         image: result.dataValues.image,
         brief: result.dataValues.brief
       };
