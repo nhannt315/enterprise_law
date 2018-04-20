@@ -7,7 +7,7 @@ const newSchema = new Schema({
     require: true,
     auto: true
   },
-  linkToNews: {
+  newsHtml: {
     type: String,
     require: true
   },
