@@ -14,7 +14,7 @@ module.exports = (sequelize, Sequelize) => {
       }
     },
     {
-      tableName: 'Classes'
+      tableName: 'ValidityStatus'
     }
   );
   return lawClass;

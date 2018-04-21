@@ -37,7 +37,7 @@ mongoose.connect(config.connectionDatabase, err => {
         console.log(res);
       })
       .catch(err => {});
-    copyNewData();
+    // copyNewData();
     // copyClassData();
     // copyAgency();
     // copyLawDocument();
