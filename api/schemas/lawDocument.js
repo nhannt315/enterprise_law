@@ -52,7 +52,9 @@ const lawDocumentSchema = new Schema({
     type: String
   },
   validityStatus: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref: 'ValidityStatus',
+    require: true
   },
   invalidReason: {
     type: String
