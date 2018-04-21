@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const config = require('./config/config.json');
 
+const classModel = require('./api/models/class');
+const agencyModel = require('./api/models/agency');
+
 const lawDocumentSchema = require('./api/schemas/lawDocument');
 const lawDocumentModel = mongoose.model('LawDocument', lawDocumentSchema);
 
@@ -17,7 +20,10 @@ mongoose.connect(config.connectionDatabase, err => {
     console.log(err);
   } else {
     console.log('Connect to db successfully!');
-    insertValidityStats();
+    // insertValidityStats();
+    let startDate = new Date('1/1/2017');
+    let endDate = new Date('12/31/2017');
+    console.log(startDate.toTimeString());
   }
 });
 
@@ -31,15 +37,23 @@ const insertValidityStats = () => {
   //   console.log(data);
   // });
   lawDocumentModel
-    // .populate('ValidityStatus')
     .find()
+    .populate('agency class validityStatus')
     .exec()
     .then(results => {
       results.forEach(result => {
-        // console.log(result.validityStatus);
+        console.log(result);
       });
-      fs.writeFile('./data.json', results, err=> console.log(err));
-
     })
-    .catch(err => {});
+    .catch(err => console.log(err));
+  // fs.readFile('./data.json', (err, data) => {
+  //   // console.log(JSON.parse(data));
+  //   data = JSON.parse(data);
+  //   data.forEach(ele => {
+  //     lawDocumentModel
+  //       .create(ele)
+  //       .then(result => console.log(result))
+  //       .catch(err => console.log(err));
+  //   });
+  // });
 };

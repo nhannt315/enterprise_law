@@ -10,6 +10,7 @@ const newsApi = require('./api/controllers/news');
 const classApi = require('./api/controllers/class');
 const agencyApi = require('./api/controllers/agency');
 const lawDocumentApi = require('./api/controllers/lawDocument');
+const validityStatusApi = require('./api/controllers/validityStatus');
 
 app.use(morgan('dev'));
 app.use(

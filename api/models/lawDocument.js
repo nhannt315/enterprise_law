@@ -29,12 +29,24 @@ const searchDocument = (
 ) => {
   let searchCondition = {};
   searchCondition = { description: { $regex: '.*' + keyword + '.*' } };
-  console.log(searchCondition);
-  if(agency){
+  if (agencyId) {
     searchCondition.agency = agencyId;
   }
+  if (validityStatus) {
+    searchCondition.validityStatus = validityStatus;
+  }
+  if (lawClass) {
+    searchCondition.class = lawClass;
+  }
+
+  if (signer) {
+    searchCondition.signer = { $regex: '.*' + signer + '.*' };
+  }
+
+  console.log(searchCondition);
   return lawDocumentModel
     .find(searchCondition)
+    // .populate('class agency validityStatus')
     .limit(perPage)
     .skip(perPage * pageIndex)
     .exec();
