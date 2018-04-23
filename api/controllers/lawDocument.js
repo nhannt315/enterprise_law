@@ -10,8 +10,11 @@ Router.get('/getAll', (req, res, next) => {
   console.log('test:', page + ' ' + perPage);
   lawDocumentModel
     .getAllDocument(page, perPage)
-    .then(result => {
-      res.status(HttpStatus.OK).json(result);
+    .then((result) => {
+      res.status(HttpStatus.OK).json({
+        total: result[1],
+        data: result[0]
+      });
     })
     .catch(err => {
       res.status(HttpStatus.BAD_REQUEST).json({

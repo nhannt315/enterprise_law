@@ -1,20 +1,18 @@
 const mongoose = require('mongoose');
 const lawDocumentSchema = require('../schemas/lawDocument');
+const Promise = require('bluebird');
 
 const lawDocumentModel = mongoose.model('LawDocument', lawDocumentSchema);
 
 const getAllDocument = (pageIndex, perPage) => {
-  if (pageIndex && perPage) {
-    return lawDocumentModel
+  return Promise.all([
+    lawDocumentModel
       .find()
       .limit(perPage)
       .skip(perPage * pageIndex)
-      .exec();
-  }
-  return lawDocumentModel
-    .find()
-    .limit(perPage)
-    .exec();
+      .exec(),
+    lawDocumentModel.count().exec()
+  ]);
 };
 
 const searchDocument = (
@@ -44,12 +42,14 @@ const searchDocument = (
   }
 
   console.log(searchCondition);
-  return lawDocumentModel
-    .find(searchCondition)
-    // .populate('class agency validityStatus')
-    .limit(perPage)
-    .skip(perPage * pageIndex)
-    .exec();
+  return (
+    lawDocumentModel
+      .find(searchCondition)
+      // .populate('class agency validityStatus')
+      .limit(perPage)
+      .skip(perPage * pageIndex)
+      .exec()
+  );
 };
 
 module.exports = {

@@ -8,8 +8,11 @@ Router.get('/all', (req, res, next) => {
   const page = Math.max(0, req.query.page);
   newModel
     .getAllNewsFromDB(page, perPage)
-    .then(result => {
-      res.status(200).json(result);
+    .then((result) => {
+      res.status(200).json({
+        total: result[1],
+        data: result[0]
+      });
     })
     .catch(err => {
       res.status(400).json({
