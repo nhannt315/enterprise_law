@@ -1,23 +1,28 @@
-const mongoose = require('mongoose');
-const newSchema = require('../schemas/new');
-const Promise = require('bluebird');
+const mongoose = require("mongoose");
+const newSchema = require("../schemas/new");
+const Promise = require("bluebird");
 
-const newModel = mongoose.model('New', newSchema);
+const newModel = mongoose.model("New", newSchema);
 
 const getAllNewsFromDB = (pageIndex, itemPerPage) => {
   if (pageIndex && itemPerPage) {
     return Promise.all([
       newModel
-      .find()
-      .limit(itemPerPage)
-      .skip(pageIndex * itemPerPage)
-      .exec(),
+        .find()
+        .limit(itemPerPage)
+        .skip(pageIndex * itemPerPage)
+        .exec(),
       newModel.count().exec()
-    ])
+    ]);
   }
-  return newModel.find().exec();
+  return Promise.all([newModel.find().exec(), newModel.count().exec()]);
+};
+
+const getNewsByIdFromDB = id => {
+  return newModel.find({ _id: id }).exec();
 };
 
 module.exports = {
-  getAllNewsFromDB
+  getAllNewsFromDB,
+  getNewsByIdFromDB
 };
