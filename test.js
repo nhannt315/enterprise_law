@@ -28,40 +28,39 @@ mongoose.connect(config.connectionDatabase, err => {
     console.log(err);
   } else {
     console.log('Connect to db successfully!');
-    lawDocumentModel
-      .findOne()
-      .populate('class')
-      .populate('agency')
-      .exec()
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {});
-    // copyNewData();
-    // copyClassData();
-    // copyAgency();
-    // copyLawDocument();
+    fixLawDocument();
   }
 });
 
-// LawDocument.findAll().then(results => {
-//   results.forEach(result => {
-//     if (flag <= 2) {
-//       const des = results[flag].dataValues.description;
-//       const tagArr = ner.tag(des);
-//       tfidf.addDocument(des);
-//       console.log(des);
-//       tagArr.forEach(tag => {
-//         if (tag[1] === 'N') {
-//           tfidf.tfidfs(tag[0], (i, measure) => {
-//             console.log(tag[0] + ':' + measure);
-//           })
-//         }
-//       });
-//     }
-//     flag++;
-//   });
-// });
+function fixLawDocument() {
+  LawDocument.findAll().then(results => {
+    results.forEach(result => {
+      let updateObject = {
+        promulgateDate: result.dataValues.promulgateDate * 1000,
+        startDate: result.dataValues.startDate
+          ? result.dataValues.startDate * 1000
+          : null,
+        endDate: result.dataValues.endDate
+          ? result.dataValues.endDate * 1000
+          : null,
+        publicationDate: result.dataValues.publicationDate
+          ? result.dataValues.publicationDate * 1000
+          : null
+      };
+      lawDocumentModel.findOneAndUpdate(
+        { numberSymbol: result.dataValues.numberSymbol },
+        updateObject,
+        (err, doc, res) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(doc);
+          }
+        }
+      );
+    });
+  });
+}
 
 function parseDate(source) {
   let dateParts = source.split('/');
