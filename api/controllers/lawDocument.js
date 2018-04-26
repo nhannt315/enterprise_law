@@ -10,7 +10,7 @@ Router.get('/getAll', (req, res, next) => {
   console.log('test:', page + ' ' + perPage);
   lawDocumentModel
     .getAllDocument(page, perPage)
-    .then((result) => {
+    .then(result => {
       res.status(HttpStatus.OK).json({
         total: result[1],
         data: result[0]
@@ -31,10 +31,24 @@ Router.get('/search', (req, res, next) => {
   const agencyId = req.query.agencyId;
   const signer = req.query.signer;
   const validityStatus = req.query.status;
+  const searchType = req.query.searchType;
   lawDocumentModel
-    .searchDocument(page, perPage, keyword, agencyId, validityStatus, classId, null, signer)
+    .searchDocument(
+      page,
+      perPage,
+      keyword,
+      searchType,
+      agencyId,
+      validityStatus,
+      classId,
+      null,
+      signer
+    )
     .then(result => {
-      res.status(HttpStatus.OK).json(result);
+      res.status(HttpStatus.OK).json({
+        total: result[1],
+        data: result[0]
+      });
     })
     .catch(err => {
       res.status(HttpStatus.BAD_REQUEST).json({

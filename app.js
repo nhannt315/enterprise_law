@@ -37,6 +37,7 @@ app.use('/news', newsApi);
 app.use('/class', classApi);
 app.use('/agency', agencyApi);
 app.use('/lawDocument', lawDocumentApi);
+app.use('/status', validityStatusApi);
 
 
 

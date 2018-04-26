@@ -19,6 +19,7 @@ const searchDocument = (
   pageIndex,
   perPage,
   keyword,
+  searchType,
   agencyId,
   validityStatus,
   lawClass,
@@ -26,7 +27,11 @@ const searchDocument = (
   signer
 ) => {
   let searchCondition = {};
-  searchCondition = { description: { $regex: '.*' + keyword + '.*' } };
+  if(searchType === 'title'){
+    searchCondition = { description: { $regex: '.*' + keyword + '.*' } };
+  }else if(searchType === 'number'){
+    searchCondition = { numberSymbol: { $regex: '.*' + keyword + '.*' } };
+  }
   if (agencyId) {
     searchCondition.agency = agencyId;
   }
@@ -42,14 +47,17 @@ const searchDocument = (
   }
 
   console.log(searchCondition);
-  return (
+  return Promise.all([
     lawDocumentModel
       .find(searchCondition)
-      // .populate('class agency validityStatus')
+      .populate('class agency validityStatus')
       .limit(perPage)
       .skip(perPage * pageIndex)
+      .exec(),
+      lawDocumentModel
+      .count(searchCondition)
       .exec()
-  );
+  ])
 };
 
 module.exports = {
