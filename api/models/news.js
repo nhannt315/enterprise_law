@@ -11,6 +11,7 @@ const getAllNewsFromDB = (pageIndex, itemPerPage) => {
         .find()
         .limit(itemPerPage)
         .skip(pageIndex * itemPerPage)
+        .sort({publishedDate: -1})
         .exec(),
       newModel.count().exec()
     ]);
