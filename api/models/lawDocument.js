@@ -27,9 +27,9 @@ const searchDocument = (
   signer
 ) => {
   let searchCondition = {};
-  if(searchType === 'title'){
+  if (searchType === 'title') {
     searchCondition = { description: { $regex: '.*' + keyword + '.*' } };
-  }else if(searchType === 'number'){
+  } else if (searchType === 'number') {
     searchCondition = { numberSymbol: { $regex: '.*' + keyword + '.*' } };
   }
   if (agencyId) {
@@ -45,6 +45,22 @@ const searchDocument = (
   if (signer) {
     searchCondition.signer = { $regex: '.*' + signer + '.*' };
   }
+  lawDocumentModel
+    .find(searchCondition)
+    .populate('class agency validityStatus')
+    .limit(perPage)
+    .skip(perPage * pageIndex)
+    .exec()
+    .then(doc => {
+      console.log(doc);
+    });
+
+  lawDocumentModel
+    .count(searchCondition)
+    .exec()
+    .then(doc => {
+      console.log(doc);
+    });
 
   console.log(searchCondition);
   return Promise.all([
@@ -54,13 +70,42 @@ const searchDocument = (
       .limit(perPage)
       .skip(perPage * pageIndex)
       .exec(),
-      lawDocumentModel
-      .count(searchCondition)
-      .exec()
-  ])
+    lawDocumentModel.count(searchCondition).exec()
+  ]);
 };
 
+const getMostViewedLaw = itemNumber => {
+  return lawDocumentModel
+    .find()
+    .limit(itemNumber)
+    .sort({ viewCount: -1 })
+    .exec();
+};
+
+const getNewestLaw = itemNumber => {
+  return lawDocumentModel
+    .find()
+    .limit(itemNumber)
+    .sort({ promulgateDate: -1 })
+    .exec();
+};
+
+const getLawDocumentDetail = documentId =>
+  lawDocumentModel
+    .find({ _id: documentId })
+    .populate('class agency validityStatus')
+    .exec();
+
+const updateLawDocument = (documentId, updateData) => {
+  return lawDocumentModel
+    .findOneAndUpdate({ _id: documentId }, updateData)
+    .exec();
+};
 module.exports = {
   getAllDocument,
-  searchDocument
+  searchDocument,
+  getLawDocumentDetail,
+  updateLawDocument,
+  getNewestLaw,
+  getMostViewedLaw
 };

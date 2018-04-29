@@ -52,9 +52,7 @@ const lawDocumentSchema = new Schema({
     type: String
   },
   validityStatus: {
-    type: Schema.Types.ObjectId,
-    ref: 'ValidityStatus',
-    require: true
+    type: String
   },
   invalidReason: {
     type: String
@@ -62,10 +60,6 @@ const lawDocumentSchema = new Schema({
   linkToFile: {
     type: String,
     require: true
-  },
-  viewCount: {
-    type: Number,
-    default: 0
   }
 });
 

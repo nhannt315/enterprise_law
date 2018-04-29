@@ -26,6 +26,10 @@ const newSchema = new Schema({
   brief: {
     type: String,
     require: true
+  },
+  viewCount: {
+    type: Number,
+    default: 0
   }
 });
 

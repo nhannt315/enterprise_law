@@ -23,9 +23,55 @@ Router.get('/getAll', (req, res, next) => {
     });
 });
 
+Router.get('/newest', (req, res, next) => {
+  const itemNumber = parseInt(req.query.itemNumber) || 5;
+  lawDocumentModel
+    .getNewestLaw(itemNumber)
+    .then(result => {
+      res.status(HttpStatus.OK).json(result);
+    })
+    .catch(err => {
+      res.status(HttpStatus.BAD_REQUEST).json({
+        error: err
+      });
+    });
+});
+
+Router.get('/mostviewed', (req, res, next) => {
+  const itemNumber = parseInt(req.query.itemNumber) || 5;
+  lawDocumentModel
+    .getMostViewedLaw(itemNumber)
+    .then(result => {
+      res.status(HttpStatus.OK).json(result);
+    })
+    .catch(err => {
+      res.status(HttpStatus.BAD_REQUEST).json({
+        error: err
+      });
+    });
+});
+
+Router.get('/detail/:id', (req, res, next) => {
+  lawDocumentModel
+    .getLawDocumentDetail(req.params.id)
+    .then(result => {
+      result[0].viewCount += 1;
+      console.log('viewCount', result[0].viewCount);
+      lawDocumentModel.updateLawDocument(result[0]._id, {
+        viewCount: result[0].viewCount
+      });
+      return res.status(HttpStatus.OK).json(result);
+    })
+    .catch(err => {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        error: err
+      });
+    });
+});
+
 Router.get('/search', (req, res, next) => {
   const perPage = parseInt(req.query.perPage) || 10;
-  const page = Math.max(0, req.query.page);
+  const page = Math.max(1, req.query.page) - 1;
   const keyword = req.query.keyword;
   const classId = req.query.classId;
   const agencyId = req.query.agencyId;

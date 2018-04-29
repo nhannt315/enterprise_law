@@ -19,11 +19,11 @@ mongoose.connect(config.connectionDatabase, err => {
   if (err) {
     console.log(err);
   } else {
-    console.log('Connect to db successfully!');
-    // insertValidityStats();
-    let startDate = new Date('1/1/2017');
-    let endDate = new Date('12/31/2017');
-    console.log(startDate.toTimeString());
+    lawDocumentModel
+      .update({}, { viewCount: 0 })
+      .exec()
+      .then(doc => console.log(doc))
+      .catch(err => console.log(err));
   }
 });
 

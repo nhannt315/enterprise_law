@@ -5,7 +5,7 @@ const newModel = require("../models/news");
 
 Router.get("/all", (req, res, next) => {
   const perPage = parseInt(req.query.perPage);
-  const page = Math.max(0, req.query.page);
+  const page = Math.max(1, req.query.page) - 1;
   newModel
     .getAllNewsFromDB(page, perPage)
     .then(result => {
