@@ -4,14 +4,32 @@ const Promise = require('bluebird');
 
 const lawDocumentModel = mongoose.model('LawDocument', lawDocumentSchema);
 
-const getAllDocument = (pageIndex, perPage) => {
+const getAllDocument = (
+  pageIndex,
+  perPage,
+  lawClass,
+  agencyId,
+  promulgateYear,
+  validityStatus
+) => {
+  let condition = {};
+  if (lawClass) {
+    condition.class = lawClass;
+  }
+  if (agencyId) {
+    condition.agency = agencyId;
+  }
+  if (validityStatus) {
+    condition.validityStatus = validityStatus;
+  }
+  console.log(condition);
   return Promise.all([
     lawDocumentModel
-      .find()
+      .find(condition)
       .limit(perPage)
       .skip(perPage * pageIndex)
       .exec(),
-    lawDocumentModel.count().exec()
+    lawDocumentModel.count(condition).exec()
   ]);
 };
 
@@ -45,22 +63,6 @@ const searchDocument = (
   if (signer) {
     searchCondition.signer = { $regex: '.*' + signer + '.*' };
   }
-  lawDocumentModel
-    .find(searchCondition)
-    .populate('class agency validityStatus')
-    .limit(perPage)
-    .skip(perPage * pageIndex)
-    .exec()
-    .then(doc => {
-      console.log(doc);
-    });
-
-  lawDocumentModel
-    .count(searchCondition)
-    .exec()
-    .then(doc => {
-      console.log(doc);
-    });
 
   console.log(searchCondition);
   return Promise.all([

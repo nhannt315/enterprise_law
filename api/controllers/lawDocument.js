@@ -6,10 +6,20 @@ const lawDocumentModel = require('../models/lawDocument');
 
 Router.get('/getAll', (req, res, next) => {
   const perPage = parseInt(req.query.perPage) || 10;
-  const page = Math.max(0, req.query.page);
-  console.log('test:', page + ' ' + perPage);
+  const page = Math.max(1, req.query.page) - 1;
+  const lawClass = req.query.classId;
+  const agencyId = req.query.agencyId;
+  const validityStatus = req.query.status;
+  const promulgateYear = req.query.year;
   lawDocumentModel
-    .getAllDocument(page, perPage)
+    .getAllDocument(
+      page,
+      perPage,
+      lawClass,
+      agencyId,
+      promulgateYear,
+      validityStatus
+    )
     .then(result => {
       res.status(HttpStatus.OK).json({
         total: result[1],
