@@ -66,7 +66,6 @@ Router.get('/detail/:id', (req, res, next) => {
     .getLawDocumentDetail(req.params.id)
     .then(result => {
       result[0].viewCount += 1;
-      console.log('viewCount', result[0].viewCount);
       lawDocumentModel.updateLawDocument(result[0]._id, {
         viewCount: result[0].viewCount
       });

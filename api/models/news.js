@@ -27,7 +27,17 @@ const updateNews = (id, updateData) => {
   return newModel.findOneAndUpdate({ _id: id }, updateData).exec();
 };
 
+const getMostViewedNews = itemNumber => {
+  return newModel
+    .find()
+    .limit(itemNumber)
+    .sort({ viewCount: -1 })
+    .exec();
+};
+
 module.exports = {
   getAllNewsFromDB,
-  getNewsByIdFromDB
+  getNewsByIdFromDB,
+  updateNews,
+  getMostViewedNews
 };
