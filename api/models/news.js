@@ -5,18 +5,15 @@ const Promise = require('bluebird');
 const newModel = mongoose.model('New', newSchema);
 
 const getAllNewsFromDB = (pageIndex, itemPerPage) => {
-  if (pageIndex && itemPerPage) {
-    return Promise.all([
-      newModel
-        .find()
-        .limit(itemPerPage)
-        .skip(pageIndex * itemPerPage)
-        .sort({ publishedDate: -1 })
-        .exec(),
-      newModel.count().exec()
-    ]);
-  }
-  return Promise.all([newModel.find().exec(), newModel.count().exec()]);
+  return Promise.all([
+    newModel
+      .find()
+      .limit(itemPerPage)
+      .skip(pageIndex * itemPerPage)
+      .sort({ publishedDate: -1 })
+      .exec(),
+    newModel.count().exec()
+  ]);
 };
 
 const getNewsByIdFromDB = id => {

@@ -25,7 +25,7 @@ Router.get('/all', (req, res, next) => {
 Router.get('/mostViewed', (req, res, next) => {
   const itemNumber = parseInt(req.query.itemNumber) || 5;
   newModel
-    .getMostViewedNews()
+    .getMostViewedNews(itemNumber)
     .then(result => {
       res.status(HttpStatus.OK).json(result);
     })
